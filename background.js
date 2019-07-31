@@ -14,5 +14,7 @@ chrome.pageAction.onClicked.addListener(tab => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.operation === "activateButton") {
     chrome.pageAction.show(sender.tab.id);
+  } else if (request.operation === "deactivateButton") {
+    chrome.pageAction.hide(sender.tab.id);
   }
 });

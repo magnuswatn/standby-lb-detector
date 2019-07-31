@@ -24,5 +24,6 @@ const checkIfStandby = () => {
     // So that we notify if the box goes standby -> active -> standby
     updateStatus = true;
     document.body.classList.remove("standby-lb-detector-css");
+    chrome.runtime.sendMessage({ operation: "deactivateButton" });
   }
 };
