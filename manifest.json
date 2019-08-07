@@ -1,17 +1,20 @@
 {
   "name": "Standby lb detector",
-  "version": "1.0",
+  "version": "2.0",
   "author": "Magnus Watn",
   "manifest_version": 2,
   "icons": {
     "64": "icon64.png",
     "128": "icon128.png"
   },
-  "permissions": ["https://*/", "webRequest"],
+  "permissions": ["https://*/", "webRequest", "storage"],
   "page_action": {
     "default_icon": {
       "64": "icon64.png"
     }
+  },
+  "omnibox": {
+    "keyword": "b"
   },
   "background": {
     "scripts": ["background.js"],
@@ -23,6 +26,11 @@
       "js": ["contentScript.js"],
       "css": ["standby-lb-detector-css.css"],
       "matches": ["https://*/xui/"]
+    },
+    {
+      "run_at": "document_idle",
+      "js": ["contentScriptLoginPage.js"],
+      "matches": ["https://*/tmui/login.jsp*"]
     }
   ]
 }

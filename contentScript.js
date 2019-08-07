@@ -1,4 +1,5 @@
 let updateStatus = true;
+let lastSavedStatus;
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.operation === "checkStatus") {
@@ -14,16 +15,31 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 const checkIfStandby = () => {
   const statusInfo = document.getElementById("status").innerText.toLowerCase();
 
-  if (statusInfo.includes("standby")) {
-    if (updateStatus) {
-      document.body.className = "standby-lb-detector-css";
-      chrome.runtime.sendMessage({ operation: "activateButton" });
+  if (status !== lastSavedStatus) {
+    if (statusInfo.includes("standby")) {
+      saveStatus("standby");
+      if (updateStatus) {
+        document.body.className = "standby-lb-detector-css";
+        chrome.runtime.sendMessage({ operation: "activateButton" });
+      }
+    } else {
+      // We enable updating if the box is active
+      // So that we notify if the box goes standby -> active -> standby
+      saveStatus("active");
+      updateStatus = true;
+      document.body.classList.remove("standby-lb-detector-css");
+      chrome.runtime.sendMessage({ operation: "deactivateButton" });
     }
-  } else {
-    // We enable updating if the box is active
-    // So that we notify if the box goes standby -> active -> standby
-    updateStatus = true;
-    document.body.classList.remove("standby-lb-detector-css");
-    chrome.runtime.sendMessage({ operation: "deactivateButton" });
   }
+};
+
+const saveStatus = status => {
+  chrome.storage.local.set(
+    {
+      [location.hostname]: status
+    },
+    () => {
+      lastSavedStatus = status;
+    }
+  );
 };
