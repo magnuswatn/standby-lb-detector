@@ -7,7 +7,11 @@
     "64": "icon64.png",
     "128": "icon128.png"
   },
-  "permissions": ["https://*/", "webRequest", "storage"],
+  "permissions": [
+    "https://*/",
+    "webRequest",
+    "storage"
+  ],
   "page_action": {
     "default_icon": {
       "64": "icon64.png"
@@ -17,20 +21,32 @@
     "keyword": "b"
   },
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": true
   },
   "content_scripts": [
     {
       "run_at": "document_start",
-      "js": ["contentScript.js"],
-      "css": ["standby-lb-detector-css.css"],
-      "matches": ["https://*/xui/"]
+      "js": [
+        "contentScript.js"
+      ],
+      "css": [
+        "standby-lb-detector-css.css"
+      ],
+      "matches": [
+        "https://*/xui/"
+      ]
     },
     {
       "run_at": "document_idle",
-      "js": ["contentScriptLoginPage.js"],
-      "matches": ["https://*/tmui/login.jsp*"]
+      "js": [
+        "contentScriptLoginPage.js"
+      ],
+      "matches": [
+        "https://*/tmui/login.jsp*"
+      ]
     }
   ]
 }
