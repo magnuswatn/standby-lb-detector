@@ -41,5 +41,15 @@ chrome.omnibox.onInputChanged.addListener((text, suggest) => {
 });
 
 chrome.omnibox.onInputEntered.addListener(hostname => {
-  chrome.tabs.update({ url: `https://${hostname}` });
+  // When using chrome.tabs.update() the focus stays
+  // at the omnibox, which is annoying when using a
+  // pasword manager to fill out the login details
+  // and such. So we remove the active tab and create
+  // a new one. This will lose the tab history, but
+  // it's the better of two evils.
+  chrome.tabs.query({ active: true }, (tab) => {
+    chrome.tabs.remove(tab[0].id, () => {
+      chrome.tabs.create({ url: `https://${hostname}` });
+    });
+  });
 });
